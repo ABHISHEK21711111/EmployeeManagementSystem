@@ -1,0 +1,96 @@
+<mat-card class="p-8">
+    @if(this.data.employeeId){
+    <mat-card-title>Update Emplopee</mat-card-title>
+    }@else{
+    <mat-card-title>Add Emplopee</mat-card-title>
+    }
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="w-full">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+
+        <div class="w-full flex">
+            <mat-form-field class="w-6/12">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone">
+            </mat-form-field>
+            <div class="w-8/12 ml-2">
+                <label>Gender</label>
+                <mat-radio-group formControlName="gender">
+                    <mat-radio-button [value]="1">Male</mat-radio-button>
+                    <mat-radio-button [value]="2">FeMale</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <div class="flex">
+            <mat-form-field class="w-1/2">
+                <mat-label>Job Title</mat-label>
+                <mat-select formControlName="jobTitle">
+                    <mat-option value="HR">HR</mat-option>
+                    <mat-option value="IT">IT</mat-option>
+                    <mat-option value="Finance">Finance</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="w-1/2 ml-2">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="departmentId">
+                    @for (item of departments; track $index){
+                    <mat-option [value]="item.id">{{item.name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="w-full flex">
+            <mat-form-field>
+                <mat-label>Date Of Birth</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="w-full flex">
+            <mat-form-field class="w-1/2">
+                <mat-label>Joining Date</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="joiningDate">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="w-1/2 ml-2">
+                <mat-label>Last Working Date</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="lastWorkingDate">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker2">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="flex justify-center">
+            <button mat-raised-button class="!bg-green-500 !text-white" type="submit"
+                [class.!bg-gray-400]="employeeForm.invalid" [class.!bg-green-500]="employeeForm.valid"
+                [disabled]="employeeForm.invalid">
+                {{this.data.employeeId?'Update':'Add'}}
+            </button>
+        </div>
+
+    </form>
+</mat-card>
