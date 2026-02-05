@@ -1,23 +1,57 @@
 <header>
-<mat-toolbar class="!bg-blue-400">
-  <button (click)="drawer.toggle()" matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon class="!text-white">menu</mat-icon>
-  </button>
-  <span class="!text-white">Emplopee Mangement System</span>
-  <span class="example-spacer"></span>
-</mat-toolbar>
+  <mat-toolbar class="!bg-blue-400">
+    <button (click)="drawer.toggle()" matIconButton class="example-icon"
+      aria-label="Example icon-button with menu icon">
+      <mat-icon class="!text-white">menu</mat-icon>
+    </button>
+    <span class="!text-white">Emplopee Mangement System</span>
+    <span class="example-spacer"></span>
+    @if(authService.isLoggedIn){
+    <div class="flex gap-2 items-center">
+      <span routerLink="/profile" class="!text-white cursor-pointer">{{authService.authDetail?.email}}</span>
+      <button (click)="logout()" matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon class="!text-white">logout</mat-icon>
+      </button>
+    </div>
+    }
+  </mat-toolbar>
 </header>
-<mat-drawer-container class="" >
-  <mat-drawer #drawer class="w-[300px] bg-white shadow-lg" mode="side" [opened]="true">
-  <div class="flex flex-col items-center gap-4 text-blue-700 p-4">
-    <a routerLink="/">DashBord</a>
-    <a routerLink="/departments">Departments</a>
-    <a routerLink="/employee">Employee List</a>
-  </div>
+<mat-drawer-container class="">
+  <mat-drawer #drawer class="w-[300px] bg-white shadow-lg" mode="side" [opened]="authService.isLoggedIn">
+    <div class="flex flex-col items-center gap-4 text-blue-700 p-4">
+      <mat-nav-list role="list">
+        @if(authService.isEmployee){
+        <mat-list-item>
+          <a class="menu"  routerLink="/employee-dashbaord">
+            <mat-icon>house</mat-icon>
+            <span>Employee DashBoard</span></a>
+        </mat-list-item>
+        <mat-list-item>
+          <a class="menu" routerLink="/leaves"><mat-icon>work_off</mat-icon><span>Leaves</span></a>
+        </mat-list-item>
+        <mat-list-item>
+          <a class="menu" routerLink="/attendace"><mat-icon></mat-icon><span>Attendace History</span></a>
+        </mat-list-item>
+        }@else{
+        <mat-list-item>
+          <a class="menu" routerLink="/"><mat-icon>house</mat-icon><span>DashBord</span></a>
+        </mat-list-item>
+        <mat-list-item>
+          <a class="menu" routerLink="/departments"><mat-icon>meeting_room</mat-icon><span>Departments</span></a>
+        </mat-list-item>
+        <mat-list-item>
+          <a class="menu" routerLink="/employee"><mat-icon>people</mat-icon><span>Employee List</span></a>
+        </mat-list-item>
+        <mat-list-item>
+          <a class="menu" routerLink="/leaves"><mat-icon>work_off</mat-icon><span>Leaves</span></a>
+        </mat-list-item>
+        }
+      </mat-nav-list>
+    </div>
   </mat-drawer>
   <mat-drawer-content>
     <main class="min-h-screen bg-gray-200">
-       <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </main>
   </mat-drawer-content>
 </mat-drawer-container>

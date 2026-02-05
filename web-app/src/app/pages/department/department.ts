@@ -5,25 +5,32 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { PagedData } from '../../types/paged-data';
+import { Table } from '../../components/table/table';
 
 @Component({
   selector: 'app-department',
-  imports: [MatButtonModule, MatInputModule, MatFormFieldModule, FormsModule],
+  imports: [MatButtonModule, MatInputModule, MatFormFieldModule, FormsModule,Table],
   templateUrl: './department.html',
   styleUrl: './department.css',
 })
 export class Department {
   httpService = inject(HttpService);
-  departments: IDepartment[] = [];
+  departments!: PagedData<IDepartment>;
   isFormOpen = false;
   departmentName!: string;
   editId = 0;
+  filter={
+   pageIndex:0,
+   pageSize:2
+  }
+  showCols = ['id', 'name', 'action'];
   ngOnInit() {
     this.getLatesData();
   }
 
   getLatesData() {
-    this.httpService.getDepartments().subscribe((result) => {
+    this.httpService.getDepartments(this.filter).subscribe((result) => {
       this.departments = result;
     });
   }
@@ -57,6 +64,9 @@ export class Department {
       this.isFormOpen = false;
       this.getLatesData();
     });
-
+  }
+    pageChange(event:any){
+    this.filter.pageIndex = event.pageIndex;
+    this.getLatesData();
   }
 }

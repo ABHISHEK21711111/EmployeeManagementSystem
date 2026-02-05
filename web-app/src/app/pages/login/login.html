@@ -1,0 +1,33 @@
+    <div class="flex justify-center items-center h-screen bg-gray-100">
+        <mat-card class="w-96 p-6 shadow-xl rounded-2xl">
+
+            <h2 class="text-center text-2xl font-semibold mb-4">
+                Login
+            </h2>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+                <!-- Email -->
+                <mat-form-field class="w-full mb-4">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email">
+                </mat-form-field>
+
+                <!-- Password -->
+                <mat-form-field class="w-full mb-4">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <button class="mt-2 mr-2" mat-icon-button matSuffix (click)="hide = !hide" type="button">
+                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- Button -->
+                <button mat-raised-button class="w-full !bg-green-500" type="submit" [disabled]="loginForm.invalid">
+                    Login
+                </button>
+
+            </form>
+        </mat-card>
+    </div>
+

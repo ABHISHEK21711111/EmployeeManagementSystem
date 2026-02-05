@@ -9,6 +9,7 @@ export interface IEmployee {
   joiningDate: string;
   lastWorkingDate: string;
   dataOfBirth: string;
+  salary:number;
 }
 
 export enum Gender {

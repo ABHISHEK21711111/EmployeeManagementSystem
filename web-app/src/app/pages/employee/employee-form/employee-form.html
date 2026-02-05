@@ -52,7 +52,7 @@
         </div>
 
         <div class="w-full flex">
-            <mat-form-field>
+            <mat-form-field class="w-full">
                 <mat-label>Date Of Birth</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
                 <mat-hint>MM/DD/YYYY</mat-hint>
@@ -60,6 +60,12 @@
                     <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                 </mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="w-full">
+                <mat-label>Salary</mat-label>
+                <input type="number" matInput formControlName="salary">
             </mat-form-field>
         </div>
         <div class="w-full flex">

@@ -1,3 +1,14 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+.menu{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 1rem;
+  &:hover{
+    color: rgb(50,50,249);
+    font-size: 500;
+  }
+}

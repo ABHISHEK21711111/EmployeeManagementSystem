@@ -37,7 +37,7 @@ export class EmployeeForm {
   fb = inject(FormBuilder);
   dailogRef = inject(MatDialogRef<EmployeeForm>)
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-  this.data = this.data || {};  // agar null hai to empty object bana do
+  this.data = this.data || {};  
 }
   @Input() employeeId!:number;
 
@@ -46,23 +46,29 @@ export class EmployeeForm {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required]],
-    gender: ['1', Validators.required],
+    gender: [1, Validators.required],
+    salary:[],
     departmentId: ['', Validators.required],
     jobTitle: ['', Validators.required],
     joiningDate:[null, Validators.required],
-    lastWorkingDate:[],
+    lastWorkingDate:[null],
     dateOfBirth:[null, Validators.required],
   });
 
   departments:IDepartment[]=[];
   httpService = inject(HttpService)
   ngOnInit(){
-    this.httpService.getDepartments().subscribe(result=>{
-      this.departments = result;
+    this.httpService.getDepartments({}).subscribe(result=>{
+      this.departments = result.data;
     });
     if(this.data.employeeId){
       this.httpService.getEmployeeById(this.data.employeeId).subscribe(result=>{
-        this.employeeForm.patchValue(result as any);
+        console.log(result);
+        const employee = result as any;
+       employee.gender = employee.gender !== null
+       ? Number(employee.gender)
+       : null;
+        this.employeeForm.patchValue(employee);
         this.employeeForm.get('gender')?.disable();
         this.employeeForm.get('joiningDate')?.disable();
         this.employeeForm.get('dateOfBirth')?.disable();

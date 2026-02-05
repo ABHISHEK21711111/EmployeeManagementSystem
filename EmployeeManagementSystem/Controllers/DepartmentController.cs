@@ -1,5 +1,7 @@
 ﻿using EmployeeManagementSystem.Data;
 using EmployeeManagementSystem.Entity;
+using EmployeeManagementSystem.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +19,7 @@ namespace EmployeeManagementSystem.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> addDepartment([FromBody]Department model)
         {
             await departmentRepository.AddAsync(model);
@@ -25,6 +28,7 @@ namespace EmployeeManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDepartment([FromRoute] int id,[FromBody] Department model)
         {
             var department = await departmentRepository.FindByIdAsync(id);
@@ -35,13 +39,26 @@ namespace EmployeeManagementSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDepartment()
+        [Authorize]
+        public async Task<IActionResult> GetAllDepartment([FromQuery] SearchOptions options)
         {
             var list = await departmentRepository.GetAll();
-            return Ok(list);    
+            var pagedData = new PagedData<Department>();
+            pagedData.TotalData = list.Count;
+            if(options.PageIndex.HasValue)
+            {
+                pagedData.Data = list.Skip(options!.PageIndex!.Value * options!.PageSize!.Value).
+                    Take(options.PageSize.Value).ToList();
+            }
+            else
+            {
+                pagedData.Data = list;
+            }
+            return Ok(pagedData);    
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDepartment([FromRoute] int id)
         {
             await departmentRepository.DeleteAsync(id);

@@ -2,29 +2,12 @@
     @if(!isFormOpen){
     <div class="flex justify-between mb-2">
         <h1 class="text-xl font-semibold">Depatments</h1>
-        <button mat-flat-button class="!bg-green-500" (click)="isFormOpen=true">Add</button>
+        <button mat-flat-button class="!bg-green-500" (click)="isFormOpen=true; departmentName='';">Add</button>
     </div>
-    <table class="table-auto border-collapse">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (item of departments; track $index){
-            <tr>
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
-                <td>
-                    <button mat-flat-button (click)="editDepartment(item)">Edit</button>
-                    <button mat-flat-button class="!bg-red-500 ml-2" (click)="delete(item.id)">Delete</button>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+    <app-table [pagedData]="departments" [pageIndex]="filter.pageIndex" [pageSize]="filter.pageSize"
+        [displayedColumns]="showCols" (onEdit)="editDepartment($event)" (onDelete)="delete($event)"
+        (onPageChange)="pageChange($event)">
+    </app-table>
     }
     @else{
     <div class="flex">
